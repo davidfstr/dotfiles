@@ -17,7 +17,9 @@ alias ls='ls -G '
 alias ll='ls -l '
 
 # This script
+DOTFILES_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 alias editrc='edit ~/.bashrc'
+alias editrc2='edit "$DOTFILES_DIR/.bashrc_shared"'
 alias refresh='source ~/.bashrc'
 alias reload=refresh
 
@@ -69,8 +71,14 @@ alias sqlite='rlwrap sqlite' # wrap with readline support
 # (If changes are made to the /etc/hosts file, use this to make the system notice)
 alias reloadhosts='dscacheutil -flushcache'
 
-# Editor
+# Text Editor
 alias edit='bbedit'
+
+# Markdown Editor
+md () {
+    [ ! -f "$1" ] && touch "$1";    # create if doesn't exist
+    open -a Mou "$1";
+}
 
 # PNG Crush
 pngc () { pngcrush "$1" "$1-"; }
