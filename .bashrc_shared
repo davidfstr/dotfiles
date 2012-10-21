@@ -1,5 +1,7 @@
 # (This script is only intended to be run in interactive shells.)
 
+echo "Executing: .bashrc"
+
 # Prompt
 case `id -u` in
       0) PCHAR="#";;
