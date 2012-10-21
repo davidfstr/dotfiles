@@ -14,7 +14,7 @@ For more information about "dotfiles" in general, consider reading [holman's pos
 
 ## Requirements
 
-* OS X 10.5 (Leopard) or later
+* OS X 10.7 (Lion) or later
 * `bash` as your default shell
 
 
