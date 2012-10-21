@@ -1,0 +1,74 @@
+# (This script is only intended to be run in interactive shells.)
+
+# Prompt
+case `id -u` in
+      0) PCHAR="#";;
+      *) PCHAR="\$";;
+esac
+PS1='\[\e[0;32m\][\u\[\e[1;34m\] \w\[\e[0;32m\]]\[\e[0;32m\]${PCHAR} \[\e[m\]'
+
+# ls
+# See the 'ls' manpage for more info about LSCOLORS
+# Affect: ddllssppeebbccuuggdddd"
+LSCOLORS="exfxcxdxbxegedabagacad"
+alias ls='ls -G '
+alias ll='ls -l '
+
+# This script
+alias editrc='edit ~/.bashrc'
+alias refresh='source ~/.bashrc'
+alias reload=refresh
+
+# Standard Paths
+PATH="$PATH:$HOME/bin"
+
+# CVS
+EDITOR="/usr/bin/nano"
+VISUAL="${EDITOR}"
+
+# SVN
+SVN_EDITOR="/usr/bin/nano"
+alias sup='svn up '
+alias sci='svn ci '
+alias sst='svn status '
+alias sdi='svn diff '
+
+# Git
+export GIT_EDITOR="/usr/bin/nano"
+alias gd='gitx --diff -w'
+alias gdh='gd HEAD'
+gdc () { gd $1^ $1; }
+alias gs='git status'
+alias gsg='git show-graph'
+alias gb='git branch'
+alias gbd='git branch -d '
+alias gx='gitx --all'
+alias gcam='git add -A; git commit -m '
+alias gaa='git add -A'
+alias gc='git checkout '
+alias gcb='git checkout -b '
+alias gri='git rebase -i '
+alias gcp='git cherry-pick '
+gmb () { git checkout $1 && git merge $2 && git branch -d $2; }
+alias gstl='git stash list'
+alias gsts='git stash save'
+gsta () { git stash apply "stash@{$1}"; }
+gstd () { git stash drop "stash@{$1}"; }
+
+# Windows emulation
+alias dir=ls
+alias dirs='find . -name '  # dir /s <filename>
+alias st='open .'           # st -> start .
+
+# SQLite
+alias sqlite='rlwrap sqlite' # wrap with readline support
+
+# DNS
+# (If changes are made to the /etc/hosts file, use this to make the system notice)
+alias reloadhosts='dscacheutil -flushcache'
+
+# Editor
+alias edit='bbedit'
+
+# PNG Crush
+pngc () { pngcrush "$1" "$1-"; }
