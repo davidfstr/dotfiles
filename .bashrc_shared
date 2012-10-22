@@ -82,3 +82,12 @@ md () {
 
 # PNG Crush
 pngc () { pngcrush "$1" "$1-"; }
+
+# preman
+# (This converts a MAN page to a Postscript file and then opens the Postscript
+#  file in Preview. This is useful for reading long man pages.)
+# (This is based on a script by Spencer Cohen.)
+preman () {
+    man -t $1 > /tmp/$1.ps &&
+    open /tmp/$1.ps;
+}
