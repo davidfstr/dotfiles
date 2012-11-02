@@ -114,3 +114,6 @@ preman () {
     man -t $1 > /tmp/$1.ps &&
     open /tmp/$1.ps;
 }
+
+# backupsleep -- Perform a Time Machine Backup and then sleep the computer.
+alias backupsleep="tmutil startbackup -b && osascript -e 'tell app \"Finder\" to sleep'"
