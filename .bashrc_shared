@@ -51,9 +51,9 @@ gdcst () { gd stash@{$1}^ stash@{$1}; }
 alias gs='git status'
 alias gb='git branch'
 alias gbd='git branch -d '      # Delete local branch only
-gbd2 () {                       # Delete local & remote branches
-    git branch -d $1 &&
+gbd2 () {                       # Delete local (if present) & remote branches
     git push origin :$1;
+    git branch -d $1;
 }
 alias gx='gitx --all'
 alias gcam='git add -A; git commit -m '
