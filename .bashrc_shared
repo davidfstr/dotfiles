@@ -44,34 +44,36 @@ alias sdi='svn diff '
 
 # Git
 export GIT_EDITOR=nano
-alias gd='gitx --diff -w'
-alias gdh='gd HEAD'
-gdc () { gd $1^ $1; }
-gdcst () { gd stash@{$1}^ stash@{$1}; }
-alias gs='git status'
+alias gd='gitx --diff -w '      # Diff using GitX. Ignore whitespace.
+alias gdh='gd HEAD'             # Diff filesystem to HEAD.
+gdc () { gd $1^ $1; }           # Show changes in a particular commit.
+alias gdch='gdc HEAD'           # Show changes in the last commit.
+gdcst () { gd stash@{$1}^ stash@{$1}; } # Show changes in a stashed commit.
+alias gs='git status'           # Summarize filesystem changes relative to HEAD.
 alias gb='git branch'
-alias gbd='git branch -d '      # Delete local branch only
-gbd2 () {                       # Delete local (if present) & remote branches
+alias gbd='git branch -d '      # Delete local branch only.
+gbd2 () {                       # Delete remote & local (if present) branches.
     git push origin :$1;
     git branch -d $1;
 }
-alias gx='gitx --all'
-alias gcam='git add -A; git commit -m '
-alias gaa='git add -A'
-alias gc='git checkout '
-alias gcb='git checkout -b '
-alias gri='git rebase -i '
+alias gx='gitx --all'                       # Open GitX and show all branches.
+alias gcam='git add -A; git commit -m '     # Commit everything in filesystem.
+alias gaa='git add -A'                      # Stage everything in filesystem.
+alias gc='git checkout '                    # Checkout branch.
+alias gcb='git checkout -b '                # Create branch and checkout.
+alias gri='git rebase -i '                  # Interactive rebase: Squash, reorder, amend, and edit unpublished commits.
 alias gcp='git cherry-pick '
 gmb () { git checkout $1 && git merge $2 && git branch -d $2; }
-alias gstl='git stash list'
-alias gsts='git stash save'
-gsta () { git stash apply "stash@{$1}"; }
-gstd () { git stash drop "stash@{$1}"; }
-gpo () {
+alias gstl='git stash list'                 # List stashed commits.
+alias gsts='git stash save'                 # Stash a new commit.
+gsta () { git stash apply "stash@{$1}"; }   # Apply a stashed commit to the filesystem.
+gstd () { git stash drop "stash@{$1}"; }    # Delete a stashed commit.
+gpo () {                                    # Push local commits to origin repository.
     CURRENT_BRANCH=`git status | head -n 1 | cut -c 13-` &&
     git push origin "$CURRENT_BRANCH";
 }
-alias gf='git fetch -p '
+alias gf='git fetch -p '                    # Fetch commits from remote repository (usually origin) and
+                                            # delete local refs to remote branches that no longer exist.
 
 # GitHub
 alias gh='open -a GitHub'
