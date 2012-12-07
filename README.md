@@ -7,7 +7,6 @@ You may find them useful if you use a similar technology stack:
 * OS X
 * bash
 * git+gitx, svn, cvs
-* BBEdit
 
 For more information about "dotfiles" in general, consider reading [holman's post on dotfiles](http://zachholman.com/2010/08/dotfiles-are-meant-to-be-forked/).
 
@@ -61,4 +60,4 @@ source "$HOME/.dotfiles/.bashrc_shared"
 
 This software is licensed under the [MIT License].
 
-[MIT License]: https://github.com/davidfstr/hbencode/blob/master/LICENSE.txt
+[MIT License]: https://github.com/davidfstr/dotfiles/blob/master/LICENSE.txt
