@@ -70,10 +70,11 @@ gsta () { git stash apply "stash@{$1}"; }   # Apply a stashed commit to the file
 gstd () { git stash drop "stash@{$1}"; }    # Delete a stashed commit.
 gpo () {                                    # Push local commits to origin repository.
     CURRENT_BRANCH=`git status | head -n 1 | cut -c 13-` &&
-    git push origin "$CURRENT_BRANCH";
+    git push -u origin "$CURRENT_BRANCH";
 }
 alias gf='git fetch -p '                    # Fetch commits from remote repository (usually origin) and
-                                            # delete local refs to remote branches that no longer exist.
+                                            #     delete local refs to remote branches that no longer exist.
+alias gp='git pull '                        # Same as 'gf', but attempts to merge with the current branch.
 
 # GitHub
 alias gh='open -a GitHub'
