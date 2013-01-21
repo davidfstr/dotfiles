@@ -61,3 +61,7 @@ source "$HOME/.dotfiles/.bashrc_shared"
 This software is licensed under the [MIT License].
 
 [MIT License]: https://github.com/davidfstr/dotfiles/blob/master/LICENSE.txt
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/davidfstr/dotfiles/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
