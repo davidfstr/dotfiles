@@ -73,7 +73,10 @@ gpo () {                                    # Push local commits to origin repos
     git push origin "$CURRENT_BRANCH";
 }
 alias gf='git fetch -p '                    # Fetch commits from remote repository (usually origin) and
-                                            # delete local refs to remote branches that no longer exist.
+                                            #     delete local refs to remote branches that no longer exist.
+ghooks () {                                 # Install shared Git hooks in local repository.
+    ln -s "$DOTFILES_DIR/git_hooks/pre-commit" ./.git/hooks/pre-commit;
+}
 
 # GitHub
 alias gh='open -a GitHub'
