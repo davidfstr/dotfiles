@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Generates a diff reflecting the contents of the specified changelist.
+# 
+# Unlike the real 'p4 diff', this script includes files that have been added.
+
+if [ -z "$1" ]
+then
+    CL="default"
+else
+    CL=$1
+fi
+
+TEMPOUT="$(mktemp /tmp/gendiff.output.XXXXXXXXXX)"
+
+p4 opened -c $CL | grep -E "\- edit ($CL )?change" | sed -e 's/#.*//' | P4DIFF='' p4 -x - diff -du > $TEMPOUT
+for ADDED_FILE in $(p4 opened -c $CL | grep -E "\- add ($CL )?change" | sed -e 's/#.*//')
+do
+    LOCAL_FILE=$(p4 where $ADDED_FILE | awk '/^\// {print $3}')
+    ADDED_FILE_ESCAPED="${ADDED_FILE//\//\\/}"
+    diff -uN "" $LOCAL_FILE | sed -e "s/---/--- $ADDED_FILE_ESCAPED/" >> $TEMPOUT
+done
+
+cat $TEMPOUT

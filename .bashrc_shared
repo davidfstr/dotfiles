@@ -28,8 +28,9 @@ alias editrc2='edit "$DOTFILES_DIR/.bashrc_shared"'
 alias refresh='source ~/.bashrc'
 alias reload=refresh
 
-# Personal bin directory
-PATH="$PATH:$HOME/bin"
+# Personal bin directories
+PATH="$PATH:$HOME/bin"          # local
+PATH="$PATH:$DOTFILES_DIR/bin"  # shared
 
 # CVS
 EDITOR=nano
@@ -88,6 +89,22 @@ ghpr () {    # Creates a pull request on GitHub for the current branch.
     open "https://github.com/$REPO_PATH/pull/new/splunk:develop...$CURRENT_BRANCH";
 }
 alias gprc=ghpr
+
+# Perforce
+padd () {
+    # Add file $1 or directory $1 (recursively) to the default changelist.
+    # WARNING: Includes ALL files, such as *.pyc or *.o.
+    find $1 -type f -print | p4 -x - add;
+}
+alias p4v='open -a p4v'             # Open visual Perforce client.
+p4cr () {
+    # Creates a code review for pending changelist $1 with message $2.
+    # Requires banter <https://github.com/markdrago/banter> to be installed and configured.
+    #   url: http://crucible.splunk.com/
+    #   project_key: SPLCR
+    #   default_reviewer: <your username>
+    p4diff $1 | banter -t "$2"
+}
 
 # Windows emulation
 alias dir=ls
