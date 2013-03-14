@@ -162,7 +162,7 @@ def _parse_opened_line(line):
 
 def convert_depot_path_to_local(depot_path):
     return subprocess.check_output(
-        'p4 fstat "' + depot_path.replace('"', '""') + '" | grep -E "^... clientFile" | cut -c 16-',
+        'p4 fstat "' + depot_path.replace('"', '\\"') + '" | grep -E "^... clientFile" | cut -c 16-',
         shell=True)[:-1]
 
 
