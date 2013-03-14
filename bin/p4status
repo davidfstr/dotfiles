@@ -1,0 +1,172 @@
+#!/usr/bin/env python
+
+"""
+Emulates the 'git status' command, but works with Perforce repositories.
+
+Limitations:
+* Will not detect changes outside the current directory.
+* Will not detect if working directory has files from multiple changelists.
+
+Supports:
+* Multiple changelists.
+* Default changelist.
+
+@author David Foster
+
+"""
+
+import os
+import os.path
+import re
+import subprocess
+import sys
+
+# TODO: Move to a configuration file
+IGNORED_FILE_EXTENSIONS = (
+    '.DS_Store',
+    '.pyc',
+    '.pyo',
+)
+
+IGNORED_PATH_FRAGMENTS = (
+    '/JS_CACHE/',
+)
+
+MOD_TYPE_ADD = 'new file:'
+MOD_TYPE_EDIT = 'modified:'
+MOD_TYPE_DELETE = 'deleted:'
+
+_P4_MOD_TYPE_2_MOD_TYPE = {
+    'add': MOD_TYPE_ADD,
+    'edit': MOD_TYPE_EDIT,
+    'delete': MOD_TYPE_DELETE
+}
+
+_DEVNULL = open(os.devnull, 'w')
+
+
+def main(args):
+    last_changelist = get_current_changelist()
+    print '# On changelist %d' % last_changelist
+    
+    staged_mods = find_staged_changes()
+    changelists = sorted(set([changelist for (_, _, changelist) in staged_mods]))
+    if len(staged_mods) != 0:
+        # Always print the default changelist first, if present
+        if 'default' in changelists:
+            changelists.remove('default')
+            changelists = ['default'] + changelists
+        
+        for changelist in changelists:
+            _print_staged_mods_for_changelist(staged_mods, changelist)
+    
+    mods = find_unstaged_changes()
+    if len(mods) != 0:
+        print '# '
+        print '# Changes not staged for commit:'
+        print '#   (use "p4 add/edit/delete <file>..." to update what will be committed)'
+        print '#   (use "p4 sync -f <file>..." to discard changes in working directory)'
+        print '# '
+        for (rel_path, mod_type) in mods:
+            print '#       %-11s %s' % (mod_type, rel_path)
+    
+    if len(staged_mods) == 0 and len(mods) == 0:
+        print 'nothing to commit (working directory clean)'
+    else:
+        print '# '
+
+
+def _print_staged_mods_for_changelist(staged_mods, target_changelist):
+    print '# '
+    print '# Changes to be committed in changelist %s:' % str(target_changelist)
+    print '#   (use "p4 revert <file>..." to discard changes in working directory)'
+    print '# '
+    for (rel_path, mod_type, changelist) in staged_mods:
+        if changelist == target_changelist:
+            print '#       %-11s %s' % (mod_type, rel_path)
+
+def get_current_changelist():
+    # Determine current changelist number
+    last_changelist_line = subprocess.check_output('p4 changes -m1 ...'.split(' '))[:-1]
+    last_changelist = int(last_changelist_line.split(' ')[1])
+    return last_changelist
+
+# NOTE: Ignores opened files (already marked for add, edit, or delete)
+def find_unstaged_changes():
+    added_rel_paths = subprocess.check_output(
+        'find . -type f -print0 | xargs -0 p4 fstat >/dev/null',
+        stderr=subprocess.STDOUT,
+        shell=True).split('\n')[:-1]
+    added_rel_paths = [_remove_suffix(path, ' - no such file(s).') for path in added_rel_paths]
+    added_rel_paths = [os.path.relpath(abs_path) for abs_path in added_rel_paths]
+
+    edited_abs_paths = subprocess.check_output('p4 diff -se ...'.split(' ')).split('\n')[:-1]
+    edited_rel_paths = [os.path.relpath(abs_path) for abs_path in edited_abs_paths]
+
+    deleted_abs_paths = subprocess.check_output('p4 diff -sd ...'.split(' ')).split('\n')[:-1]
+    deleted_rel_paths = [os.path.relpath(abs_path) for abs_path in deleted_abs_paths]
+
+    # Combine modifications and sort by filepath
+    mods = (
+        [(p, MOD_TYPE_ADD) for p in added_rel_paths] +
+        [(p, MOD_TYPE_EDIT) for p in edited_rel_paths] +
+        [(p, MOD_TYPE_DELETE) for p in deleted_rel_paths]
+    )
+    mods.sort()
+
+    # Cull ignored files
+    mods = [m for m in mods if not any([m[0].endswith(ext) for ext in IGNORED_FILE_EXTENSIONS])]
+    mods = [m for m in mods if not any([frag in m[0] for frag in IGNORED_PATH_FRAGMENTS])]
+    
+    return mods
+
+
+def _remove_suffix(text, suffix):
+    if not text.endswith(suffix):
+        raise ValueError('Expected suffix %s in %s' % (repr(suffix), repr(text)))
+    return text[:-len(suffix)]
+
+
+def find_staged_changes():
+    # NOTE: For large number of opened files, this is not very performant.
+    #       In such a case, individual opened lines should have depot paths
+    #       converted *en-masse* to local paths with a single call to 'p4 fstat'.
+    #       Currently a call to fstat is made for each file individually.
+    opened_lines = subprocess.check_output(
+        'p4 opened'.split(' '),
+        stderr=_DEVNULL).split('\n')[:-1]
+    staged_mods = [_parse_opened_line(line) for line in opened_lines]
+    staged_mods.sort()
+    
+    return staged_mods
+
+
+def _parse_opened_line(line):
+    m = re.match(r'^(.*?)(?:#[0-9]+)? - ([a-z]+) (default )?change ([0-9]+ )?\([^)]+\)$', line)
+    (depot_path, p4_mod_type, default_cl, numbered_cl) = m.groups()
+    
+    abs_path = convert_depot_path_to_local(depot_path)
+    rel_path = os.path.relpath(abs_path)
+    
+    mod_type = _P4_MOD_TYPE_2_MOD_TYPE.get(p4_mod_type, None)
+    if mod_type is None:
+        raise ValueError('Unrecognized p4 modification type: ' + p4_mod_type)
+    
+    if default_cl is not None:
+        changelist = 'default'
+    elif numbered_cl is not None:
+        changelist = int(numbered_cl[:-1])
+    else:
+        raise ValueError('Could not parse changelist number from: %s' % repr(line))
+    
+    return (rel_path, mod_type, changelist)
+
+
+def convert_depot_path_to_local(depot_path):
+    return subprocess.check_output(
+        'p4 fstat "' + depot_path.replace('"', '""') + '" | grep -E "^... clientFile" | cut -c 16-',
+        shell=True)[:-1]
+
+
+if __name__ == '__main__':
+    main(sys.argv[1:])
