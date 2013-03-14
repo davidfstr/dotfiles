@@ -81,11 +81,13 @@ def _print_staged_mods_for_changelist(staged_mods, target_changelist):
         if changelist == target_changelist:
             print '#       %-11s %s' % (mod_type, rel_path)
 
+
 def get_current_changelist():
     # Determine current changelist number
     last_changelist_line = subprocess.check_output('p4 changes -m1 ...'.split(' '))[:-1]
     last_changelist = int(last_changelist_line.split(' ')[1])
     return last_changelist
+
 
 # NOTE: Ignores opened files (already marked for add, edit, or delete)
 def find_unstaged_changes():
