@@ -5,11 +5,7 @@ Emulates the 'git status' command, but works with Perforce repositories.
 
 Limitations:
 * Will not detect changes outside the current directory.
-* Will not detect if working directory has files from multiple changelists.
-
-Supports:
-* Multiple changelists.
-* Default changelist.
+* Will not detect if working directory has files synced to multiple changelists.
 
 @author David Foster
 
