@@ -64,6 +64,7 @@ alias gc='git checkout '                    # Checkout branch.
 alias gcb='git checkout -b '                # Create branch and checkout.
 alias gri='git rebase -i '                  # Interactive rebase: Squash, reorder, amend, and edit unpublished commits.
 alias gcp='git cherry-pick '
+                                            # Merge branch $2 to $1 and delete it.
 gmb () { git checkout $1 && git merge $2 && git branch -d $2; }
 alias gstl='git stash list'                 # List stashed commits.
 alias gsts='git stash save'                 # Stash a new commit.
@@ -79,6 +80,10 @@ alias gp='git pull '                        # Same as 'gf', but attempts to merg
 ghooks () {                                 # Install shared Git hooks in local repository.
     ln -s "$DOTFILES_DIR/git_hooks/pre-commit" ./.git/hooks/pre-commit;
 }
+                                            # Show graph of commits stemming from HEAD.
+alias gsg="git log --graph --pretty=format:'%Cred%h%Creset %C(bold blue)<%an>%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)' --abbrev-commit "
+                                            # Show graph of commits stemming from all branches.
+alias gsgb='gsg --branches '
 
 # GitHub
 alias gh='open -a GitHub'
