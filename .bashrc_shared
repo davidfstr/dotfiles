@@ -66,6 +66,7 @@ alias gri='git rebase -i '                  # Interactive rebase: Squash, reorde
 alias gcp='git cherry-pick '
                                             # Merge branch $2 to $1 and delete it.
 gmb () { git checkout $1 && git merge $2 && git branch -d $2; }
+                                            # Merge branch $1 with $2 and delete $2.
 alias gstl='git stash list'                 # List stashed commits.
 alias gsts='git stash save'                 # Stash a new commit.
 gsta () { git stash apply "stash@{$1}"; }   # Apply a stashed commit to the filesystem.
