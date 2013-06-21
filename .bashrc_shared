@@ -61,6 +61,7 @@ alias gx='gitx --all'                       # Open GitX and show all branches.
 alias gcam='git add -A; git commit -m '     # Commit everything in filesystem.
 alias gaa='git add -A'                      # Stage everything in filesystem.
 alias ga='git add '                         # Stage specific file.
+alias gcm='git commit -m '                  # Commit staged changes.
 alias gc='git checkout '                    # Checkout branch.
 alias gcb='git checkout -b '                # Create branch and checkout.
 alias gri='git rebase -i '                  # Interactive rebase: Squash, reorder, amend, and edit unpublished commits.
