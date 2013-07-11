@@ -126,10 +126,10 @@ alias sqlite='rlwrap sqlite' # wrap with readline support
 # (If changes are made to the /etc/hosts file, use this to make the system notice)
 alias reloadhosts='dscacheutil -flushcache'
 
-# Text Editor
-alias edit='bbedit'
+# Text Editor: Sublime Text
+alias edit='subl'
 
-# Markdown Editor
+# Markdown Editor: Mou
 md () {
     [ ! -f "$1" ] && touch "$1";    # create if doesn't exist
     open -a Mou "$1";
