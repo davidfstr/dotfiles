@@ -63,6 +63,7 @@ alias gcam='git add -A; git commit -m '     # Commit everything in filesystem.
 alias gaa='git add -A'                      # Stage everything in filesystem.
 alias ga='git add '                         # Stage specific file.
 alias gcm='git commit -m '                  # Commit staged changes.
+alias gca='git commit --amend '             # Rewrite the last commit.
 alias gc='git checkout '                    # Checkout branch.
 alias gcb='git checkout -b '                # Create branch and checkout.
 alias gri='git rebase -i '                  # Interactive rebase: Squash, reorder, amend, and edit unpublished commits.
