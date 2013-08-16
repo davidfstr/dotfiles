@@ -191,3 +191,10 @@ preman () {
 
 # backupsleep -- Perform a Time Machine Backup and then sleep the computer.
 alias backupsleep="tmutil startbackup -b && osascript -e 'tell app \"Finder\" to sleep'"
+
+# Python: Style checking
+#   W293 blank line contains whitespace
+#   W291 trailing whitespace
+#   (E302 expected 2 blank lines, found 1)
+#   E501 line too long
+pstyle () { pep8 "$1" | grep -v W293 | grep -v W291 | grep -v E501; }
