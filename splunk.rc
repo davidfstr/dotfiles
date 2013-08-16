@@ -1,0 +1,97 @@
+#
+# splunk.rc
+# 
+# Commands for developing at Splunk.
+# 
+
+# Splunk Development I
+shome () {
+    export SPLUNK_HOME=/Applications/$1;
+    export SPLUNK_DB=$SPLUNK_HOME/var/lib/splunk;
+    export PATH=$PATH:$SPLUNK_HOME/bin;
+}
+alias skey='curl -k https://localhost:8089/services/auth/login/ -d"username=admin&password=weak"'
+alias editsrc='edit ~/.splunkrc'
+
+# Splunk Development II
+# (Prepare environment to build Splunk)
+senv () {
+    if [ -z "$1" ]; then
+        echo "*** Please specify a branch name." ;
+    else
+        echo "Splunk dev branch: $1" ;
+        export SPLUNK_HOME=$HOME/dev/build/$1 ;
+        export SPLUNK_SOURCE=$HOME/dev/$1 ;
+        export PYTHONPATH=$PYTHONPATH:$SPLUNK_SOURCE/cfg/bundles/framework/contrib/django.egg ;
+    fi
+}
+alias sln=~/bin/enviro.sh
+ssplunk () {
+    $SPLUNK_HOME/bin/splunk $@
+}
+ssplunkdj () {
+    $SPLUNK_HOME/etc/apps/framework/splunkdj $@
+}
+alias ss='ssplunk '
+alias ssr='ssplunk restart'
+alias ssrss='ssplunk restartss'
+
+# Build Splunk
+sbref () {
+    open http://eswiki/Developer_Build_and_Test
+}
+sb1 () {
+    # Builds contrib.
+    # NOTE: Must already be in $SPLUNK_SOURCE
+    cd contrib ;
+    JOBS=-j4 ./buildit.py ;
+    err=$?
+    cd .. ;
+    if [ $err -eq 0 ]; then
+        say "Build success" ;
+    else
+        say "Build FAILED" ;
+    fi
+    return $err
+}
+sb2 () {
+    # Configures core product.
+    # NOTE: Must already be in $SPLUNK_SOURCE
+    ./configure --prefix=$SPLUNK_HOME --non-opt --with-testing ;
+    err=$?
+    if [ $err -eq 0 ]; then
+        say "Configure success" ;
+    else
+        say "Configure FAILED" ;
+    fi
+    return $err
+}
+sb3 () {
+    # Builds and installs core product.
+    # NOTE: Must already be in $SPLUNK_SOURCE
+    make -j4 install ;
+    err=$?
+    if [ $err -eq 0 ]; then
+        say "Install success" ;
+    else
+        say "Install FAILED" ;
+    fi
+    return $err
+}
+alias sb123='sb1 && sb2 && sb3'
+
+# Workaround for DVPL-2273
+alias gaa2='git add -A; git reset HEAD cfg/bundles/framework/server/splunkdj/context_processors.py web/search_mrsparkle/exposed/js/contrib/require_dev_config.js'
+alias gcam2='gaa2; git commit -m '
+
+# Lint for AppFx JavaScript
+slint1 () {     # Required by Bamboo
+    $SPLUNK_HOME/bin/splunk cmd python \
+        $SPLUNK_SOURCE/test/tests/static/jslint.py \
+        $SPLUNK_SOURCE/web/search_mrsparkle/exposed/js/splunkjs
+}
+slint2 () {     # Nice to have for AppFx samples
+    $SPLUNK_HOME/bin/splunk cmd python \
+        $SPLUNK_SOURCE/test/tests/static/jslint.py \
+        $SPLUNK_SOURCE/cfg/bundles/framework
+}
