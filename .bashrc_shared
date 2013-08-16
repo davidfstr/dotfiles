@@ -100,7 +100,7 @@ ghpr () {    # Creates a pull request on GitHub for the current branch.
 }
 alias gprc=ghpr
 
-# Perforce
+# p4
 padd () {
     # Add file $1 or directory $1 (recursively) to the default changelist.
     # WARNING: Includes ALL files, such as *.pyc or *.o.
@@ -114,6 +114,46 @@ p4cr () {
     #   project_key: SPLCR
     #   default_reviewer: <your username>
     p4diff $1 | banter -t "$2"
+}
+p4-postmove () {
+    # p4 postmove $1 $2
+    # 
+    # Converts {$1=delete, $2=add} to {$1=move/delete, $2=move/add}.
+    # 
+    # Useful to add move-related history information to a diff that
+    # was applied to a p4 workspace, such as through
+    # 'git p4 submit --prepare-p4-only'.
+    # 
+    if [ ! -f "$2" ]; then
+        echo "*** Destination file expected to already exist: $2" ;
+        return ;
+    fi
+    if [ -f "$1" ]; then
+        echo "*** Source file expected to already be missing: $1" ;
+        echo "*** This command is not designed to support a simultaneous move & add of the source file." ;
+        return ;
+    fi
+    p4 revert "$1" ;
+    mv -f "$2" "$1" ;
+    p4 revert "$2" ;
+    p4 edit "$1" ;
+    p4 move "$1" "$2" ;
+}
+
+# git-p4
+alias gbfm='git branch -f master p4/master'     # Move master up to p4/master
+alias gp4sp='git p4 submit --prepare-p4-only'    # Put current change in p4
+
+# git-p4 + Crucible
+# (Generate diff for Crucible code review. Takes OLD..NEW as argument.)
+alias gdcr='git diff -U1000 --no-prefix '
+# (Create code review diff $3.diff for $1..$2)
+cr () {
+    gdcr $1 $2 > ~/Desktop/Commits/$3.diff
+}
+# (Create code review diff $1.diff for HEAD^..HEAD)
+cr1 () {
+    cr HEAD^ HEAD $1
 }
 
 # Windows emulation
@@ -129,7 +169,7 @@ alias sqlite='rlwrap sqlite' # wrap with readline support
 alias reloadhosts='dscacheutil -flushcache'
 
 # Text Editor: Sublime Text
-alias edit='subl'
+alias edit='subl '
 
 # Markdown Editor: Mou
 md () {
