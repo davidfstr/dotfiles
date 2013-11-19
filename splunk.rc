@@ -20,8 +20,18 @@ senv () {
         echo "*** Please specify a branch name." ;
     else
         echo "Splunk dev branch: $1" ;
+        
+        # Core environment variables
         export SPLUNK_HOME=$HOME/dev/build/$1 ;
         export SPLUNK_SOURCE=$HOME/dev/$1 ;
+        
+        # Allow unit tests to be run.
+        # See also: http://eswiki/Using_Grunt
+        #export PATH="$SPLUNK_HOME/bin:$PATH"
+        export NODE_PATH="$SPLUNK_HOME/lib/node_modules:$NODE_PATH"
+        #export PATH="$PATH:$SPLUNK_SOURCE/web/node_modules/grunt-cli/bin"
+        
+        # Allow bundled Django to be used anywhere, for debugging
         export PYTHONPATH=$PYTHONPATH:$SPLUNK_SOURCE/cfg/bundles/framework/contrib/django.egg ;
     fi
 }
@@ -44,7 +54,12 @@ sb1 () {
     # Builds contrib.
     # NOTE: Must already be in $SPLUNK_SOURCE
     cd contrib ;
-    JOBS=-j4 ./buildit.py ;
+    
+    # OS X 10.5-10.7
+    #JOBS=-j4 ./buildit.py ;
+    # OS X 10.8 (developer build) - need OS 10.7 SDK in XCode
+    JOBS=-j4 ./buildit.py --osx-deployment-target=10.7 --skip-node ;
+    
     err=$?
     cd .. ;
     if [ $err -eq 0 ]; then
