@@ -25,7 +25,7 @@ alias grep='grep --color=auto'
 DOTFILES_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 alias editrc='edit ~/.bashrc'
 alias editrc2='edit "$DOTFILES_DIR/.bashrc_shared"'
-alias editrcs='edit "$DOTFILES_DIR/.splunk.rc"'
+alias editrcs='edit "$DOTFILES_DIR/splunk.rc"'
 alias gorc2='cd "$DOTFILES_DIR"'
 alias refresh='source ~/.bashrc'
 alias reload=refresh
