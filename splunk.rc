@@ -35,6 +35,10 @@ senv () {
         export PYTHONPATH=$PYTHONPATH:$SPLUNK_SOURCE/cfg/bundles/framework/contrib/django.egg ;
     fi
 }
+senv2 () {
+    senv $1 ;
+    export SPLUNK_SOURCE=$HOME/dev/p4/$1 ;
+}
 alias sln=~/bin/enviro.sh
 ssplunk () {
     $SPLUNK_HOME/bin/splunk $@
@@ -50,6 +54,21 @@ alias ssrss='ssplunk restartss'
 sbref () {
     open http://eswiki/Developer_Build_and_Test
 }
+sb0 () {
+    # Cleans contrib.
+    # NOTE: Must already be in $SPLUNK_SOURCE
+    cd contrib ;
+    ./buildit.py clean
+    
+    err=$?
+    cd .. ;
+    if [ $err -eq 0 ]; then
+        say "Clean success" ;
+    else
+        say "Clean FAILED" ;
+    fi
+    return $err
+}
 sb1 () {
     # Builds contrib.
     # NOTE: Must already be in $SPLUNK_SOURCE
@@ -58,7 +77,9 @@ sb1 () {
     # OS X 10.5-10.7
     #JOBS=-j4 ./buildit.py ;
     # OS X 10.8 (developer build) - need OS 10.7 SDK in XCode
-    JOBS=-j4 ./buildit.py --osx-deployment-target=10.7 --skip-node ;
+    #JOBS=-j4 ./buildit.py --osx-deployment-target=10.7 --skip-node ;
+    # OS X 10.9 (developer build)
+    JOBS=-j4 ./buildit.py --osx-deployment-target=10.8 --skip-node ;
     
     err=$?
     cd .. ;
@@ -95,8 +116,8 @@ sb3 () {
 }
 alias sb123='sb1 && sb2 && sb3'
 
-# Workaround for DVPL-2273
-alias gaa2='git add -A; git reset HEAD cfg/bundles/framework/server/splunkdj/context_processors.py web/search_mrsparkle/exposed/js/contrib/require_dev_config.js'
+# Workaround files I don't want to commit
+alias gaa2='git add -A; git reset HEAD web/search_mrsparkle/exposed/js/uri/route.js'
 alias gcam2='gaa2; git commit -m '
 
 # Lint for AppFx JavaScript
@@ -109,4 +130,9 @@ slint2 () {     # Nice to have for AppFx samples
     $SPLUNK_HOME/bin/splunk cmd python \
         $SPLUNK_SOURCE/test/tests/static/jslint.py \
         $SPLUNK_SOURCE/cfg/bundles/framework
+}
+slinta () {     # Entire exposed tree
+    $SPLUNK_HOME/bin/splunk cmd python \
+        $SPLUNK_SOURCE/test/tests/static/jslint.py \
+        $SPLUNK_SOURCE/web/search_mrsparkle/exposed/js
 }
