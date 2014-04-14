@@ -49,6 +49,7 @@ ssplunkdj () {
 alias ss='ssplunk '
 alias ssr='ssplunk restart'
 alias ssrss='ssplunk restartss'
+alias sss='ssplunk stop'
 
 # Build Splunk
 sbref () {
@@ -79,7 +80,8 @@ sb1 () {
     # OS X 10.8 (developer build) - need OS 10.7 SDK in XCode
     #JOBS=-j4 ./buildit.py --osx-deployment-target=10.7 --skip-node ;
     # OS X 10.9 (developer build)
-    JOBS=-j4 ./buildit.py --osx-deployment-target=10.8 --skip-node ;
+    # TODO: Does the specific build of node work?
+    JOBS=-j4 ./buildit.py --osx-deployment-target=10.8 --skip-node ; #&& ./buildit.py node ;
     
     err=$?
     cd .. ;
@@ -93,7 +95,7 @@ sb1 () {
 sb2 () {
     # Configures core product.
     # NOTE: Must already be in $SPLUNK_SOURCE
-    ./configure --prefix=$SPLUNK_HOME --non-opt --with-testing ;
+    ./configure ;
     err=$?
     if [ $err -eq 0 ]; then
         say "Configure success" ;
