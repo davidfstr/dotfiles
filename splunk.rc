@@ -4,17 +4,13 @@
 # Commands for developing at Splunk.
 # 
 
-# Splunk Development I
-shome () {
-    export SPLUNK_HOME=/Applications/$1;
-    export SPLUNK_DB=$SPLUNK_HOME/var/lib/splunk;
-    export PATH=$PATH:$SPLUNK_HOME/bin;
-}
-alias skey='curl -k https://localhost:8089/services/auth/login/ -d"username=admin&password=weak"'
+# Edit this script
 alias editsrc='edit ~/.splunkrc'
 
-# Splunk Development II
-# (Prepare environment to build Splunk)
+# Get authentication key
+alias skey='curl -k https://localhost:8089/services/auth/login/ -d"username=admin&password=changeme"'
+
+# Setup Splunk dev environment
 senv () {
     if [ -z "$1" ]; then
         echo "*** Please specify a branch name." ;
@@ -39,7 +35,12 @@ senv2 () {
     senv $1 ;
     export SPLUNK_SOURCE=$HOME/dev/p4/$1 ;
 }
-alias sln=~/bin/enviro.sh
+
+# Goto Splunk directories
+goss () { cd $SPLUNK_SOURCE ; }
+gosh () { cd $SPLUNK_HOME ; }
+
+# Run Splunk commands
 ssplunk () {
     $SPLUNK_HOME/bin/splunk $@
 }
@@ -81,6 +82,8 @@ sb1 () {
     #JOBS=-j4 ./buildit.py --osx-deployment-target=10.7 --skip-node ;
     # OS X 10.9 (developer build)
     # TODO: Does the specific build of node work?
+    # NOTE: --skip-node skips the building of `less` and `requirejs` which is
+    #       needed for rebuilding the built files. They have to be `npm install`ed manually.
     JOBS=-j4 ./buildit.py --osx-deployment-target=10.8 --skip-node ; #&& ./buildit.py node ;
     
     err=$?
@@ -118,9 +121,8 @@ sb3 () {
 }
 alias sb123='sb1 && sb2 && sb3'
 
-# Workaround files I don't want to commit
-alias gaa2='git add -A; git reset HEAD web/search_mrsparkle/exposed/js/uri/route.js'
-alias gcam2='gaa2; git commit -m '
+# Symlink build directory to source directory
+alias sln=~/bin/enviro.sh
 
 # Lint for AppFx JavaScript
 slint1 () {     # Required by Bamboo
