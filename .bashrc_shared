@@ -202,3 +202,6 @@ alias backupsleep="tmutil startbackup -b && osascript -e 'tell app \"Finder\" to
 #   (E302 expected 2 blank lines, found 1)
 #   E501 line too long
 pstyle () { pep8 "$1" | grep -v W293 | grep -v W291 | grep -v E501; }
+
+# Print a terminal bell character
+alias bell='tput bel'
