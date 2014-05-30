@@ -12,6 +12,7 @@ alias skey='curl -k https://localhost:8089/services/auth/login/ -d"username=admi
 
 # Setup Splunk dev environment
 senv () {
+    # ...using git-p4 branch
     if [ -z "$1" ]; then
         echo "*** Please specify a branch name." ;
     else
@@ -23,17 +24,27 @@ senv () {
         
         # Allow unit tests to be run.
         # See also: http://eswiki/Using_Grunt
-        #export PATH="$SPLUNK_HOME/bin:$PATH"
+        export PATH="$SPLUNK_HOME/bin:$PATH"
         export NODE_PATH="$SPLUNK_HOME/lib/node_modules:$NODE_PATH"
-        #export PATH="$PATH:$SPLUNK_SOURCE/web/node_modules/grunt-cli/bin"
+        export PATH="$PATH:$SPLUNK_SOURCE/web/node_modules/grunt-cli/bin"
         
         # Allow bundled Django to be used anywhere, for debugging
         export PYTHONPATH=$PYTHONPATH:$SPLUNK_SOURCE/cfg/bundles/framework/contrib/django.egg ;
     fi
 }
 senv2 () {
+    # ...using p4 branch
     senv $1 ;
     export SPLUNK_SOURCE=$HOME/dev/p4/$1 ;
+}
+senv3 () {
+    # ...using released version of Splunk (and no source)
+    export SPLUNK_HOME=/Applications/splunk_$1 ;
+    export SPLUNK_SOURCE=/tmp/NO_SOURCE
+    
+    if [ ! -d "$SPLUNK_HOME" ]; then
+        echo "*** Build directory not found: $SPLUNK_HOME" ;
+    fi
 }
 
 # Goto Splunk directories
