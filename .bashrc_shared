@@ -7,7 +7,7 @@ case `id -u` in
       0) PCHAR="#";;
       *) PCHAR="\$";;
 esac
-PS1='\[\e[0;32m\][\u\[\e[1;34m\] \w\[\e[0;32m\]]\[\e[0;32m\]${PCHAR} \[\e[m\]'
+PS1='\[\e[0;32m\][\h\[\e[1;34m\] \w\[\e[0;32m\]]\[\e[0;32m\]${PCHAR} \[\e[m\]'
 
 # ls colors
 # See the 'ls' manpage for more info about LSCOLORS
