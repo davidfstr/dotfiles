@@ -29,9 +29,9 @@ function prompt2 {
           0) local PCHAR="#";;
           *) local PCHAR="\$";;
     esac
-    PS1="${GREEN}⌈-[\h${BOLD_BLUE} \w${GREEN}]\n⌊-${GREEN}${PCHAR} ${RESET}"
+    PS1="${GREEN}⌈-[\h${BOLD_BLUE} ${PWD}${GREEN}]\n⌊-${GREEN}${PCHAR} ${RESET}"
 }
-prompt2
+export PROMPT_COMMAND=prompt2
 
 # ls colors
 # See the 'ls' manpage for more info about LSCOLORS
