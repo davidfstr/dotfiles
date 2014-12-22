@@ -29,7 +29,7 @@ function prompt2 {
           0) local PCHAR="#";;
           *) local PCHAR="\$";;
     esac
-    PS1="${GREEN}⌈-[\h${BOLD_BLUE} ${PWD}${GREEN}]\n⌊-${GREEN}${PCHAR} ${RESET}"
+    PS1="${GREEN}⌈-[\h${BOLD_BLUE} ${PWD}${GREEN}]\n${GREEN}⌊-${PCHAR} ${RESET}"
 }
 export PROMPT_COMMAND=prompt2
 
