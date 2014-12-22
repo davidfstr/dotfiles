@@ -3,11 +3,35 @@
 echo "Executing: .bashrc"
 
 # Prompt
-case `id -u` in
-      0) PCHAR="#";;
-      *) PCHAR="\$";;
-esac
-PS1='\[\e[0;32m\][\h\[\e[1;34m\] \w\[\e[0;32m\]]\[\e[0;32m\]${PCHAR} \[\e[m\]'
+
+function prompt1 {
+    # [Cathode ~]$
+    
+    local GREEN='\[\e[0;32m\]'
+    local BOLD_BLUE='\[\e[1;34m\]'
+    local RESET='\[\e[m\]'
+    
+    case `id -u` in
+          0) local PCHAR="#";;
+          *) local PCHAR="\$";;
+    esac
+    PS1="${GREEN}[\h${BOLD_BLUE} \w${GREEN}]${GREEN}${PCHAR} ${RESET}"
+}
+function prompt2 {
+    # ⌈-[Cathode ~]
+    # ⌊-$
+    
+    local GREEN='\[\e[0;32m\]'
+    local BOLD_BLUE='\[\e[1;34m\]'
+    local RESET='\[\e[m\]'
+    
+    case `id -u` in
+          0) local PCHAR="#";;
+          *) local PCHAR="\$";;
+    esac
+    PS1="${GREEN}⌈-[\h${BOLD_BLUE} \w${GREEN}]\n⌊-${GREEN}${PCHAR} ${RESET}"
+}
+prompt2
 
 # ls colors
 # See the 'ls' manpage for more info about LSCOLORS
