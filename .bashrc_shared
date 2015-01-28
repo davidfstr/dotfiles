@@ -12,24 +12,34 @@ function prompt1 {
     local RESET='\[\e[m\]'
     
     case `id -u` in
-          0) local PCHAR="#";;
-          *) local PCHAR="\$";;
+        0) local PCHAR="#";;
+        *) local PCHAR="\$";;
     esac
     PS1="${GREEN}[\h${BOLD_BLUE} \w${GREEN}]${GREEN}${PCHAR} ${RESET}"
 }
 function prompt2 {
-    # ⌈-[Cathode ~]
-    # ⌊-$
+    # [Cathode ~ <extra>]
+    # $
     
     local GREEN='\[\e[0;32m\]'
     local BOLD_BLUE='\[\e[1;34m\]'
+    local BOLD_YELLOW='\[\e[1;33m\]'
     local RESET='\[\e[m\]'
     
+    local EXTRA=''
+    if [ ! -z $SPLUNK_HOME ]; then
+        local SPLUNK_BRANCH=`basename $SPLUNK_HOME`
+        EXTRA="$EXTRA $SPLUNK_BRANCH"
+    fi
+    if [ ! -z $EXTRA ]; then
+        EXTRA="${BOLD_YELLOW}${EXTRA}"
+    fi
+    
     case `id -u` in
-          0) local PCHAR="#";;
-          *) local PCHAR="\$";;
+        0) local PCHAR="#";;
+        *) local PCHAR="\$";;
     esac
-    PS1="${GREEN}[\h${BOLD_BLUE} ${PWD}${GREEN}]\n${GREEN}${PCHAR} ${RESET}"
+    PS1="${GREEN}[\h${BOLD_BLUE} ${PWD}${EXTRA}${GREEN}]\n${GREEN}${PCHAR} ${RESET}"
 }
 export PROMPT_COMMAND=prompt2
 
