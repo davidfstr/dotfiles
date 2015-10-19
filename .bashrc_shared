@@ -116,7 +116,7 @@ gpo () {                                    # Push local commits to origin repos
 }
 alias gf='git fetch -p '                    # Fetch commits from remote repository (usually origin) and
                                             #     delete local refs to remote branches that no longer exist.
-alias gp='git pull '                        # Same as 'gf', but attempts to merge with the current branch.
+alias gp='git pull --ff-only '              # Same as 'gf', but attempts to merge with the current branch.
 ghooks () {                                 # Install shared Git hooks in local repository.
     ln -s "$DOTFILES_DIR/git_hooks/pre-commit" ./.git/hooks/pre-commit;
 }
@@ -204,6 +204,7 @@ alias sqlite='rlwrap sqlite' # wrap with readline support
 
 # DNS
 # (If changes are made to the /etc/hosts file, use this to make the system notice)
+alias edithosts='edit /etc/hosts'
 alias reloadhosts='dscacheutil -flushcache'
 
 # Text Editor: Sublime Text
