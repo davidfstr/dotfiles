@@ -4,6 +4,26 @@ echo "Executing: .bashrc"
 
 # Prompt
 
+# Returns "*" if git working directory is dirty.
+function git_dirty {
+    [[ $(git status 2> /dev/null | tail -n1) != "nothing to commit, working directory clean" ]] && echo "*"
+}
+
+# Returns the name of the current git branch
+# or fails if not in a git repository or git isn't installed.
+function git_branch {
+    # Abort with error if not in a git repository
+    git rev-parse --inside-work-tree >/dev/null 2>&1 || return
+    
+    local branch
+    if branch="$(git symbolic-ref -q --short HEAD)"; then
+        echo "${branch}$(git_dirty)"
+    else
+        # In detached head state, use commit instead
+        echo "$(git rev-parse --short -q HEAD)$(git_dirty)"
+    fi
+}
+
 function prompt1 {
     # [Cathode ~]$
     
@@ -27,6 +47,10 @@ function prompt2 {
     local RESET='\[\e[m\]'
     
     local EXTRA=''
+    local GIT_BRANCH=$(git_branch)
+    if [ ! -z $GIT_BRANCH ]; then
+        EXTRA="$EXTRA $GIT_BRANCH"
+    fi
     if [ ! -z $SPLUNK_HOME ]; then
         local SPLUNK_BRANCH=`basename $SPLUNK_HOME`
         EXTRA="$EXTRA $SPLUNK_BRANCH"
