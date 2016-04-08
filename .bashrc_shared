@@ -55,7 +55,11 @@ function prompt2 {
         local SPLUNK_BRANCH=`basename $SPLUNK_HOME`
         EXTRA="$EXTRA $SPLUNK_BRANCH"
     fi
-    if [ ! -z $EXTRA ]; then
+    if [ ! -z $VIRTUAL_ENV ]; then
+        local VIRTUAL_ENV_NAME=`basename $VIRTUAL_ENV`
+        EXTRA="$EXTRA $VIRTUAL_ENV_NAME"
+    fi
+    if [ ! -z "$EXTRA" ]; then
         EXTRA="${BOLD_YELLOW}${EXTRA}"
     fi
     
