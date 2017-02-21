@@ -152,6 +152,8 @@ ghooks () {                                 # Install shared Git hooks in local 
 alias gsg="git log --graph --pretty=format:'%Cred%h%Creset %C(bold blue)<%an>%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)' --abbrev-commit "
                                             # Show graph of commits stemming from all branches.
 alias gsgb='gsg --branches '
+alias gsur='git submodule update --recursive'
+alias gstp='git stash pop'
 
 # GitHub
 alias gh='open -a GitHub'
