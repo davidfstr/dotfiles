@@ -108,7 +108,8 @@ alias sst='svn status '
 alias sdi='svn diff '
 
 # Git
-export GIT_EDITOR=nano
+export GIT_EDITOR='subl -w'     # Sublime as primary Git editor
+#export GIT_EDITOR=nano
 alias gd='gitx --diff -w '      # Diff using GitX. Ignore whitespace.
 alias gdh='gd HEAD'             # Diff filesystem to HEAD.
 gdc () { gd $1^ $1; }           # Show changes in a particular commit.
@@ -121,6 +122,7 @@ gbd2 () {                       # Delete remote & local (if present) branches.
     git push origin :$1;
     git branch -d $1;
 }
+gpod () { git push origin :$1 ; }           # Delete remote branch.
 alias gx='gitx --all'                       # Open GitX and show all branches.
 alias gcam='git add -A; git commit -m '     # Commit everything in filesystem.
 alias gaa='git add -A'                      # Stage everything in filesystem.
@@ -267,6 +269,12 @@ alias backupsleep="tmutil startbackup -b && osascript -e 'tell app \"Finder\" to
 #   (E302 expected 2 blank lines, found 1)
 #   E501 line too long
 pstyle () { pep8 "$1" | grep -v W293 | grep -v W291 | grep -v E501; }
+
+# Python: Misc
+editpy () {
+    MODULE_DIRPATH=$(python3 -c "import os.path; import $1; print(os.path.dirname($1.__file__))")
+    edit $MODULE_DIRPATH
+}
 
 # Print a terminal bell character
 alias bell='tput bel'
