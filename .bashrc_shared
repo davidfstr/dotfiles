@@ -120,7 +120,7 @@ alias gb='git branch'
 alias gbd='git branch -d '      # Delete local branch only.
 gbd2 () {                       # Delete remote & local (if present) branches.
     git push origin :$1;
-    git branch -d $1;
+    git branch -D $1;
 }
 gpod () { git push origin :$1 ; }           # Delete remote branch.
 alias gx='gitx --all'                       # Open GitX and show all branches.
