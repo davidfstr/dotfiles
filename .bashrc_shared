@@ -24,24 +24,13 @@ function git_branch {
     fi
 }
 
-function prompt1 {
-    # [Cathode ~]$
-    
-    local GREEN='\[\e[0;32m\]'
-    local BOLD_BLUE='\[\e[1;34m\]'
-    local RESET='\[\e[m\]'
-    
-    case `id -u` in
-        0) local PCHAR="#";;
-        *) local PCHAR="\$";;
-    esac
-    PS1="${GREEN}[\h${BOLD_BLUE} \w${GREEN}]${GREEN}${PCHAR} ${RESET}"
-}
-function prompt2 {
+function prompt {
     # [Cathode ~ <extra>]
     # $
     
+    # ANSI color codes: https://gist.github.com/chrisopedia/8754917
     local GREEN='\[\e[0;32m\]'
+    local CYAN='\[\e[0;36m\]'
     local BOLD_BLUE='\[\e[1;34m\]'
     local BOLD_YELLOW='\[\e[1;33m\]'
     local RESET='\[\e[m\]'
@@ -67,9 +56,9 @@ function prompt2 {
         0) local PCHAR="#";;
         *) local PCHAR="\$";;
     esac
-    PS1="${GREEN}[\h${BOLD_BLUE} ${PWD}${EXTRA}${GREEN}]\n${GREEN}${PCHAR} ${RESET}"
+    PS1="${GREEN}[\h ${CYAN}\D{%F %T} ${BOLD_BLUE}${PWD}${EXTRA}${GREEN}]\n${GREEN}${PCHAR} ${RESET}"
 }
-export PROMPT_COMMAND=prompt2
+export PROMPT_COMMAND=prompt
 
 # ls colors
 # See the 'ls' manpage for more info about LSCOLORS
