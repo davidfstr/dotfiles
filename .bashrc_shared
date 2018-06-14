@@ -121,8 +121,7 @@ alias gca='git commit --amend '             # Rewrite the last commit.
 alias gc='git checkout '                    # Checkout branch.
 alias gcb='git checkout -b '                # Create branch and checkout.
 alias gri='git rebase -i '                  # Interactive rebase: Squash, reorder, amend, and edit unpublished commits.
-alias gcp='git cherry-pick '
-                                            # Merge branch $2 to $1 and delete it.
+alias gcp='git cherry-pick '                # Merge branch $2 to $1 and delete it.
 gmb () { git checkout $1 && git merge $2 && git branch -d $2; }
                                             # Merge branch $1 with $2 and delete $2.
 alias gstl='git stash list'                 # List stashed commits.
@@ -145,6 +144,10 @@ alias gsg="git log --graph --pretty=format:'%Cred%h%Creset %C(bold blue)<%an>%Cr
 alias gsgb='gsg --branches '
 alias gsur='git submodule update --recursive'
 alias gstp='git stash pop'
+alias grd='git rebase develop '
+alias gmff='git merge --ff-only '
+alias gmnff='git merge --no-ff '
+alias grid='gri develop'
 
 # GitHub
 alias gh='open -a GitHub'
