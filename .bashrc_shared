@@ -218,6 +218,12 @@ cr1 () {
     cr HEAD^ HEAD $1
 }
 
+# Docker
+alias docker-cleanup="docker ps -q -f status=exited | xargs docker rm -v"
+    # Remove all stopped containers and their volumes
+alias docker-cleanupi="docker images | grep '<none>' | awk '{print $3}' | xargs docker rmi"
+    # Remove all untagged images
+
 # Windows emulation
 alias dir=ls
 dirs () { find . -iname "*$1*"; }   # dir /s <filename>
