@@ -76,7 +76,6 @@ alias grep='grep --color=auto'
 DOTFILES_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 alias editrc='edit ~/.bashrc'
 alias editrc2='edit "$DOTFILES_DIR/.bashrc_shared"'
-alias editrcs='edit "$DOTFILES_DIR/splunk.rc"'
 alias gorc2='cd "$DOTFILES_DIR"'
 alias refresh='source ~/.bashrc'
 alias reload=refresh
@@ -147,16 +146,6 @@ alias gsur='git submodule update --recursive'
 alias gstp='git stash pop'
 alias gmff='git merge --ff-only '
 alias gmnff='git merge --no-ff '
-
-# GitHub
-alias gh='open -a GitHub'
-ghpr () {    # Creates a pull request on GitHub for the current branch.
-    PWD=`pwd` &&
-    REPO_PATH=`git config --get remote.origin.url | sed 's|git@github.com:\([^/]*\)/\([^.]*\).git|\1/\2|g'` &&
-    CURRENT_BRANCH=`git status | head -n 1 | cut -c 13-` &&
-    open "https://github.com/$REPO_PATH/pull/new/splunk:develop...$CURRENT_BRANCH";
-}
-alias gprc=ghpr
 
 # p4
 padd () {
