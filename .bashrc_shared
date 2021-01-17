@@ -214,8 +214,11 @@ alias vea='source venv/bin/activate'
 # Docker (extracted/duplicated to tsk-website/.../shell_commands.sh)
 alias docker-cleanup="docker ps -q -f status=exited | xargs docker rm -v"
     # Remove all stopped containers and their volumes
+    # Deprecated: Instead use: docker container prune
+    #                      or: docker container prune --filter "until=24h"
 alias docker-cleanupi="docker images | grep '<none>' | awk '{print $3}' | xargs docker rmi"
     # Remove all untagged images
+    # Deprecated: Instead use: docker image prune -a
 
 # Windows emulation
 alias dir=ls
