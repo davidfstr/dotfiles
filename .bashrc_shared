@@ -103,6 +103,9 @@ ghooks () {                                 # Install shared Git hooks in local 
 }
 
 # Git (extracted/duplicated to tsk-website/.../shell_commands.sh)
+git_main_branch () {
+    git branch | cut -c 3- | grep -E '^master$|^main$'
+}
 alias gd='gitx --diff -w '      # Diff using GitX. Ignore whitespace.
 alias gdh='gd HEAD'             # Diff filesystem to HEAD.
 gdc () { gd $1^ $1; }           # Show changes in a particular commit.
