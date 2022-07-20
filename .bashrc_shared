@@ -98,8 +98,11 @@ alias sdi='svn diff '
 # Git
 export GIT_EDITOR='subl -w'     # Sublime as primary Git editor
 #export GIT_EDITOR=nano
-ghooks () {                                 # Install shared Git hooks in local repository.
-    ln -s "$DOTFILES_DIR/git_hooks/pre-commit" ./.git/hooks/pre-commit;
+ghooks () {                     # Install shared Git hooks in local repository.
+    ln -s "$DOTFILES_DIR/git_hooks/pre-commit.multiple.sh" ./.git/hooks/pre-commit ;
+    mkdir -p ./.git/hooks/pre-commit.d
+    ln -s "$DOTFILES_DIR/git_hooks/pre-commit.fixme.sh" ./.git/hooks/pre-commit.d/pre-commit.fixme.sh ;
+    ln -s "$DOTFILES_DIR/git_hooks/pre-commit.fixme.sh" ./.git/hooks/pre-commit.d/pre-commit.working-hours.sh ;
 }
 
 # Git (extracted/duplicated to tsk-website/.../shell_commands.sh)
