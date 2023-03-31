@@ -230,6 +230,9 @@ alias docker-cleanupi="docker images | grep '<none>' | awk '{print $3}' | xargs 
     # Remove all untagged images
     # Deprecated: Instead use: docker image prune -a
 
+# Docker
+alias runubuntu='docker run -it --rm -w /usr/src -v $(pwd):/usr/src ubuntu:latest'
+
 # Windows emulation
 alias dir=ls
 dirs () { find . -iname "*$1*"; }   # dir /s <filename>
