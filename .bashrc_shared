@@ -279,8 +279,13 @@ pstyle () { pep8 "$1" | grep -v W293 | grep -v W291 | grep -v E501; }
 
 # Python: Misc
 editpy () {
-    if [ -f "manage.py" ] && [ "$DJANGO_RUN_IN_DOCKER" == "True" ]; then
+    if [ -f "manage.py" ] && [ "${DJANGO_RUN_IN_DOCKER:-True}" == "True" ]; then
         MODULE_DIRPATH=$(python3 manage.py shell -c "import os.path; import $1; print(os.path.relpath(os.path.realpath(os.path.dirname($1.__file__)), os.path.abspath('.')))")
+        if ! [[ "$MODULE_DIRPATH" =~ ^local/.*$ ]]; then
+            echo "*** Cannot open module \"$MODULE_DIRPATH\" outside /local."
+            echo "*** Consider using: ./startdocker -e"
+            return 1
+        fi
     else
         MODULE_DIRPATH=$(python3 -c "import os.path; import $1; print(os.path.dirname($1.__file__))")
     fi
