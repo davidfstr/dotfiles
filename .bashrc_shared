@@ -163,6 +163,9 @@ alias gstp='git stash pop'
 alias gmff='git merge --ff-only '
 alias gmnff='git merge --no-ff '
 
+# Git + (most open source projects)
+alias gc-m='gc $(git_main_branch)'
+
 # p4
 padd () {
     # Add file $1 or directory $1 (recursively) to the default changelist.
