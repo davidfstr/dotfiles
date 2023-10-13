@@ -12,6 +12,12 @@ function git_dirty {
 # Returns the name of the current git branch
 # or fails if not in a git repository or git isn't installed.
 function git_branch {
+    # If SLOW_GIT=1 then don't query git at all
+    if [ ! -z $SLOW_GIT ]; then
+        echo "?"
+        return
+    fi
+    
     # Abort with error if not in a git repository
     git rev-parse --inside-work-tree >/dev/null 2>&1 || return
     
