@@ -285,6 +285,10 @@ pstyle () { pep8 "$1" | grep -v W293 | grep -v W291 | grep -v E501; }
 
 # Python: Misc
 editpy () {
+    # Opens Python module $1 (ex: "http.client") in the default visual text editor
+    # 
+    # Assumes "edit $1" opens the default visual text editor, via a definition like:
+    #     alias edit='subl '
     if [ -f "manage.py" ] && [ "${DJANGO_RUN_IN_DOCKER:-True}" == "True" ]; then
         MODULE_DIRPATH=$(python3 manage.py shell -c "import os.path; import $1; print(os.path.relpath(os.path.realpath(os.path.dirname($1.__file__)), os.path.abspath('.')))")
         if ! [[ "$MODULE_DIRPATH" =~ ^local/.*$ ]]; then
