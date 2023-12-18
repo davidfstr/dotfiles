@@ -163,6 +163,9 @@ alias gstp='git stash pop'
 alias gmff='git merge --ff-only '
 alias gmnff='git merge --no-ff '
 
+# Git (NOT extracted/duplicated to tsk-website/.../shell_commands.sh)
+alias gbm='gb -m '
+
 # Git + (most open source projects)
 alias gc-m='gc $(git_main_branch)'
 
