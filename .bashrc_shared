@@ -117,7 +117,7 @@ git_main_branch () {
 }
 alias gd='gitx --diff -w -U20 ' # Diff using GitX. Ignore whitespace. Add context.
 alias gdh='gd HEAD'             # Diff filesystem to HEAD.
-gdc () { gd $1^ $1; }           # Show changes in a particular commit.
+gdc () { gd $1^ $@; }           # Show changes in a particular commit.
 alias gdch='gdc HEAD'           # Show changes in the last commit.
 gdcst () { gd stash@{$1}^ stash@{$1}; } # Show changes in a stashed commit.
 alias gs='git status'           # Summarize filesystem changes relative to HEAD.
