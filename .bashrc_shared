@@ -102,7 +102,8 @@ alias sst='svn status '
 alias sdi='svn diff '
 
 # Git
-export GIT_EDITOR='subl -w'     # Sublime as primary Git editor
+export GIT_EDITOR='code --wait'     # VS Code as primary Git editor
+#export GIT_EDITOR='subl -w'     # Sublime Text as primary Git editor
 #export GIT_EDITOR=nano
 ghooks () {                     # Install shared Git hooks in local repository.
     ln -s "$DOTFILES_DIR/git_hooks/pre-commit.multiple.sh" ./.git/hooks/pre-commit ;
