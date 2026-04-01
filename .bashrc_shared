@@ -133,7 +133,8 @@ gbd2 () {                       # Delete remote & local (if present) branches.
     git branch -D $1;
 }
 gpod () { git push origin :$1 ; }           # Delete remote branch.
-alias gx='gitx --all'                       # Open GitX and show all branches.
+unalias gx 2>/dev/null
+gx () { gitx --all ; }                      # Open GitX and show all branches.
 alias gcam='git add -A; git commit -m '     # Commit everything in filesystem.
 alias gaa='git add -A'                      # Stage everything in filesystem.
 alias ga='git add '                         # Stage specific file.
@@ -174,7 +175,7 @@ alias gbm='gb -m '
 # Git + (most open source projects)
 alias gc-m='gc $(git_main_branch)'
 
-# Git Experimental
+# Git Experimental: gvc
 gvcon () {
     gd () { gvc -w -U20 $@ ; }
 }
@@ -184,6 +185,18 @@ gvcoff () {
 # If gvc available then use it for diffs instead of gitx --diff
 if command -v gvc >/dev/null 2>&1; then
     gvcon
+fi
+
+# Git Experimental: fork
+forkon () {
+    gx () { fork ; }
+}
+forkoff () {
+    gx () { gitx --all ; }
+}
+# If fork available then use it for graph visualization instead of gitx
+if command -v fork >/dev/null 2>&1; then
+    forkon
 fi
 
 # p4
