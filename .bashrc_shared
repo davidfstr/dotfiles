@@ -120,7 +120,7 @@ git_main_branch () {
     git branch | cut -c 3- | grep -E '^master$|^main$'
 }
 unalias gd 2>/dev/null
-gd () { gitx --diff -w -U20 $@ ; }          # Diff using GitX. Ignore whitespace. Add context.
+gd () { gvc -w -U20 $@ ; }                  # Diff using gvc. Ignore whitespace. Add context.
 alias gdh='gd HEAD'             # Diff filesystem to HEAD.
 gdc () { gd $1^ $@; }           # Show changes in a particular commit.
 alias gdch='gdc HEAD'           # Show changes in the last commit.
