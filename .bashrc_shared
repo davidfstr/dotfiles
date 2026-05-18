@@ -20,7 +20,12 @@ function git_branch {
     
     # Abort with error if not in a git repository
     git rev-parse --inside-work-tree >/dev/null 2>&1 || return
-    
+
+    # Suppress branch display for the $HOME repo unless we're exactly in $HOME
+    if [ "$PWD" != "$HOME" ] && [ "$(git rev-parse --show-toplevel 2>/dev/null)" = "$HOME" ]; then
+        return
+    fi
+
     local branch
     if branch="$(git symbolic-ref -q --short HEAD)"; then
         echo "${branch}$(git_dirty)"
