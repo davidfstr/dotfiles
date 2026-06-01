@@ -72,7 +72,10 @@ function prompt {
     esac
     PS1="${GREEN}[\h ${CYAN}\D{%F %T} ${BOLD_BLUE}${PWD}${EXTRA}${GREEN}]\n${GREEN}${PCHAR} ${RESET}"
 }
-export PROMPT_COMMAND=prompt
+# Disable custom prompt if using vhs: https://github.com/charmbracelet/vhs
+if [ -z "$VHS_TAPING" ]; then
+    export PROMPT_COMMAND=prompt
+fi
 
 # ls colors
 # See the 'ls' manpage for more info about LSCOLORS
