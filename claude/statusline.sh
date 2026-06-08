@@ -59,6 +59,10 @@ if [ -n "$cur_dir" ]; then
         if [ "$branch" = "HEAD" ]; then
             branch=$(git -C "$cur_dir" rev-parse --short=6 HEAD 2>/dev/null)
         fi
+        # Append "*" when the working tree has uncommitted changes.
+        if [ -n "$(git -C "$cur_dir" status --porcelain 2>/dev/null)" ]; then
+            branch="$branch*"
+        fi
         [ -n "$branch" ] && line="$line | ⎇ $branch"
     fi
 fi
