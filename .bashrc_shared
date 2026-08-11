@@ -287,8 +287,10 @@ editpy () {
     edit $MODULE_DIRPATH
 }
 
-# Print a terminal bell character
-alias bell='tput bel'
+# Squeak
+#alias sq='tput bel'  # works in any terminal, including remote ones
+#alias sq='afplay ~/Library/Sounds/ChuToy.aiff'  # more reliable than: tput bel
+alias sq="osascript -e 'beep'"  # also flashes screen when "Flash the screen when alert sound occurs" enabled in macOS
 
 # gh: Disable telemetry
 # https://docs.github.com/en/github-cli/github-cli/github-cli-telemetry#how-to-opt-out
